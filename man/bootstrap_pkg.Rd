@@ -22,9 +22,7 @@ the license copyright holder).}
 \item{author_email}{Email of the package author.}
 
 \item{license}{A call to a usethis license function, e.g.
-\code{usethis::use_mit_license()}, \code{usethis::use_gpl3_license()} or
-\code{usethis::use_proprietary_license("Me")}. The call is only evaluated
-once the new package is the active project.}
+\code{usethis::use_mit_license()} or \code{usethis::use_gpl3_license()}.}
 
 \item{private}{Should the GitHub repository be private?}
 }

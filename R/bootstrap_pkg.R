@@ -25,7 +25,7 @@
 #'   the license copyright holder).
 #' @param author_email Email of the package author.
 #' @param license A call to a usethis license function, e.g.
-#'   `usethis::use_mit_license()`, `usethis::use_gpl3_license().
+#'   `usethis::use_mit_license()` or `usethis::use_gpl3_license()`.
 #' @param private Should the GitHub repository be private?
 #'
 #' @return The path to the new package, invisibly.
@@ -43,6 +43,7 @@ bootstrap_pkg <- function(
     open = FALSE
   )
   usethis::local_project(path, force = TRUE)
+  path <- usethis::proj_get()
 
   usethis::use_air()
 
@@ -50,6 +51,10 @@ bootstrap_pkg <- function(
 
   # lazily evaluated here, with the new package as the active project
   force(license)
+
+  # before the README and badges exist, so update_wordlist() finds no new
+  # words and does not prompt; the final update_wordlist() below picks them up
+  usethis::use_spell_check()
 
   usethis::use_readme_rmd(open = FALSE)
 
@@ -61,8 +66,6 @@ bootstrap_pkg <- function(
     save_as = "codecov.yml",
     package = "pkgbootstrap"
   )
-
-  usethis::use_spell_check()
 
   usethis::use_github_action("check-standard")
   usethis::use_github_action("test-coverage")
@@ -89,6 +92,9 @@ bootstrap_pkg <- function(
     package = "pkgbootstrap"
   )
   usethis::use_build_ignore(".pre-commit-config.yaml")
+
+  spelling::update_wordlist(pkg = path, confirm = FALSE)
+
   prek_install(path)
 
   invisible(path)

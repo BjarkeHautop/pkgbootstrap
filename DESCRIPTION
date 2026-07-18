@@ -17,7 +17,6 @@ URL: https://github.com/BjarkeHautop/pkgbootstrap, https://bjarkehautop.github.i
 BugReports: https://github.com/BjarkeHautop/pkgbootstrap/issues
 Imports:
     gh,
+    spelling,
     usethis
-Suggests:
-    spelling
 Language: en-US
