@@ -24,21 +24,11 @@ coverage](https://codecov.io/gh/BjarkeHautop/pkgbootstrap/graph/badge.svg)](http
 <!-- badges: end -->
 
 pkgbootstrap creates a new R package with an opinionated setup in a single
-function call:
-
-- air formatting (`usethis::use_air()`), plus `panache.toml` and `jarl.toml`
-  configs
-- git, pushed to GitHub
-- a license (MIT by default; pass any `usethis::use_*_license()` call)
-- an Rmd README
-- codecov test coverage with an opinionated `codecov.yml`
-- spell checking
-- `R-CMD-check` and `test-coverage` GitHub Actions workflows
-- Dependabot updates for GitHub Actions
-- a pkgdown site deployed via GitHub Pages
-- a `.pre-commit-config.yaml` with panache, air and jarl hooks pinned to their
-  latest release, plus README-freshness and roxygen2 checks, installed with
-  [prek](https://github.com/j178/prek) if available
+function call. It combines many `usethis::use_*()` calls, uses
+[prek](https://github.com/j178/prek) as pre-commit with
+[panache](https://github.com/jolars/panache),
+[air](https://github.com/posit-dev/air) and
+[jarl](https://github.com/etiennebacher/jarl) hooks.
 
 ## Installation
 
