@@ -16,6 +16,7 @@ RoxygenNote: 8.0.0
 URL: https://github.com/BjarkeHautop/pkgbootstrap, https://bjarkehautop.github.io/pkgbootstrap/
 BugReports: https://github.com/BjarkeHautop/pkgbootstrap/issues
 Imports:
+    devtools,
     gh,
     spelling,
     usethis

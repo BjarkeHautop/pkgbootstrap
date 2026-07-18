@@ -27,7 +27,8 @@ the license copyright holder).}
 \item{private}{Should the GitHub repository be private?}
 }
 \value{
-The path to the new package, invisibly.
+The path to the new package, invisibly. The new package is left as
+the active usethis project and activated with \code{\link[usethis:proj_activate]{usethis::proj_activate()}}.
 }
 \description{
 Creates a new package with \code{\link[usethis:create_package]{usethis::create_package()}} and applies an
@@ -35,7 +36,8 @@ opinionated setup:
 }
 \details{
 \itemize{
-\item air formatting (\code{\link[usethis:use_air]{usethis::use_air()}})
+\item air formatting (\code{\link[usethis:use_air]{usethis::use_air()}}), plus \code{panache.toml} and
+\code{jarl.toml} configs
 \item git, pushed to GitHub (\code{\link[usethis:use_git]{usethis::use_git()}}, \code{\link[usethis:use_github]{usethis::use_github()}})
 \item a license, MIT by default
 \item an Rmd README (\code{\link[usethis:use_readme_rmd]{usethis::use_readme_rmd()}})
@@ -47,8 +49,12 @@ opinionated setup:
 \item Dependabot updates for GitHub Actions
 \item a pkgdown site deployed via GitHub Pages
 (\code{\link[usethis:use_pkgdown_github_pages]{usethis::use_pkgdown_github_pages()}})
-\item a \code{.pre-commit-config.yaml} with panache and air hooks pinned to their
-latest release, installed with \href{https://github.com/j178/prek}{prek} if
-available
+\item a \code{.pre-commit-config.yaml} with panache, air and jarl hooks pinned to
+their latest release, installed with
+\href{https://github.com/j178/prek}{prek} if available
 }
+
+It finishes by running the hooks once (letting the formatters fix up the
+scaffolded files), re-knitting the README, and committing and pushing the
+result.
 }

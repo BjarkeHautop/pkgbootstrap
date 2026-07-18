@@ -11,3 +11,5 @@
 ^pkgdown$
 ^\.claude$
 ^\.pre-commit-config\.yaml$
+^panache\.toml$
+^jarl\.toml$

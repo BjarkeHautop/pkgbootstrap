@@ -3,7 +3,8 @@
 #' Creates a new package with [usethis::create_package()] and applies an
 #' opinionated setup:
 #'
-#' * air formatting ([usethis::use_air()])
+#' * air formatting ([usethis::use_air()]), plus `panache.toml` and
+#'   `jarl.toml` configs
 #' * git, pushed to GitHub ([usethis::use_git()], [usethis::use_github()])
 #' * a license, MIT by default
 #' * an Rmd README ([usethis::use_readme_rmd()])
@@ -15,9 +16,13 @@
 #' * Dependabot updates for GitHub Actions
 #' * a pkgdown site deployed via GitHub Pages
 #'   ([usethis::use_pkgdown_github_pages()])
-#' * a `.pre-commit-config.yaml` with panache and air hooks pinned to their
-#'   latest release, installed with [prek](https://github.com/j178/prek) if
-#'   available
+#' * a `.pre-commit-config.yaml` with panache, air and jarl hooks pinned to
+#'   their latest release, installed with
+#'   [prek](https://github.com/j178/prek) if available
+#'
+#' It finishes by running the hooks once (letting the formatters fix up the
+#' scaffolded files), re-knitting the README, and committing and pushing the
+#' result.
 #'
 #' @param path Path where the new package is created. The last component of
 #'   the path is used as the package name.
@@ -28,7 +33,8 @@
 #'   `usethis::use_mit_license()` or `usethis::use_gpl3_license()`.
 #' @param private Should the GitHub repository be private?
 #'
-#' @return The path to the new package, invisibly.
+#' @return The path to the new package, invisibly. The new package is left as
+#'   the active usethis project and activated with [usethis::proj_activate()].
 #' @export
 bootstrap_pkg <- function(
   path,
@@ -42,10 +48,23 @@ bootstrap_pkg <- function(
     fields = list("Authors@R" = author_person(author_name, author_email)),
     open = FALSE
   )
-  usethis::local_project(path, force = TRUE)
+  usethis::proj_set(path, force = TRUE)
   path <- usethis::proj_get()
+  # some usethis helpers (e.g. use_readme_rmd()) validate the working
+  # directory, not the active project; proj_activate() at the end keeps it here
+  setwd(path)
 
   usethis::use_air()
+
+  usethis::use_template(
+    "panache.toml",
+    save_as = "panache.toml",
+    package = "pkgbootstrap"
+  )
+  # empty placeholder config, like use_air()'s air.toml; use_template()
+  # cannot write empty files
+  file.create(file.path(path, "jarl.toml"))
+  usethis::use_build_ignore(c("panache.toml", "jarl.toml"))
 
   usethis::use_git()
 
@@ -70,6 +89,7 @@ bootstrap_pkg <- function(
   usethis::use_github_action("check-standard")
   usethis::use_github_action("test-coverage")
 
+  usethis::use_directory(".github", ignore = TRUE)
   usethis::use_template(
     "dependabot.yml",
     save_as = ".github/dependabot.yml",
@@ -87,15 +107,22 @@ bootstrap_pkg <- function(
         "panache-pre-commit",
         "v2.61.0"
       ),
-      air_rev = latest_github_tag("posit-dev", "air-pre-commit", "0.10.0")
+      air_rev = latest_github_tag("posit-dev", "air-pre-commit", "0.10.0"),
+      jarl_rev = latest_github_tag("etiennebacher", "jarl-pre-commit", "0.5.0")
     ),
     package = "pkgbootstrap"
   )
   usethis::use_build_ignore(".pre-commit-config.yaml")
 
-  spelling::update_wordlist(pkg = path, confirm = FALSE)
+  invisible(utils::capture.output(suppressMessages(
+    spelling::update_wordlist(pkg = path, confirm = FALSE)
+  )))
 
   prek_install(path)
+
+  commit_scaffolding(path)
+
+  usethis::proj_activate(path)
 
   invisible(path)
 }
@@ -148,6 +175,38 @@ latest_github_tag <- function(owner, repo, fallback) {
   tag
 }
 
+# Run the hooks once so the formatters fix up the scaffolded files, re-knit
+# the README, then commit (the hooks run again and should pass) and push
+commit_scaffolding <- function(path) {
+  old <- setwd(path)
+  on.exit(setwd(old), add = TRUE)
+
+  system2("git", c("add", "-A"))
+  if (nzchar(Sys.which("prek"))) {
+    # a nonzero exit here usually just means the formatters modified files
+    system2("prek", "run")
+  }
+
+  devtools::build_readme(path)
+
+  system2("git", c("add", "-A"))
+  msg <- paste0(
+    "Generate pkg with pkgbootstrap v",
+    utils::packageVersion("pkgbootstrap")
+  )
+  status <- system2("git", c("commit", "-m", shQuote(msg)))
+  if (status != 0) {
+    message("Commit failed; inspect the hook output above and commit manually.")
+    return(invisible(FALSE))
+  }
+
+  has_remote <- length(system2("git", "remote", stdout = TRUE)) > 0
+  if (has_remote) {
+    system2("git", "push")
+  }
+  invisible(TRUE)
+}
+
 prek_install <- function(path) {
   if (!nzchar(Sys.which("prek"))) {
     message(
@@ -158,6 +217,8 @@ prek_install <- function(path) {
   }
   old <- setwd(path)
   on.exit(setwd(old), add = TRUE)
-  status <- system2("prek", "install")
+  # --overwrite replaces the README-freshness hook that use_readme_rmd()
+  # installed, instead of keeping it around as a noisy legacy hook
+  status <- system2("prek", c("install", "--overwrite"))
   invisible(status == 0)
 }
