@@ -8,5 +8,8 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 8.0.0
-URL: https://github.com/BjarkeHautop/pkgbootstrap
+URL: https://github.com/BjarkeHautop/pkgbootstrap, https://bjarkehautop.github.io/pkgbootstrap/
 BugReports: https://github.com/BjarkeHautop/pkgbootstrap/issues
+Suggests: 
+    spelling
+Language: en-US

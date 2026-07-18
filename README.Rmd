@@ -1,0 +1,69 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r}
+#| include: false
+
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# pkgbootstrap
+
+<!-- badges: start -->
+[![Codecov test
+coverage](https://codecov.io/gh/BjarkeHautop/pkgbootstrap/graph/badge.svg)](https://app.codecov.io/gh/BjarkeHautop/pkgbootstrap)
+[![R-CMD-check](https://github.com/BjarkeHautop/pkgbootstrap/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/BjarkeHautop/pkgbootstrap/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+
+The goal of pkgbootstrap is to ...
+
+## Installation
+
+You can install the development version of pkgbootstrap like so:
+
+```r
+# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
+```
+
+## Example
+
+This is a basic example which shows you how to solve a common problem:
+
+```{r}
+#| label: example
+
+library(pkgbootstrap)
+## basic example code
+```
+
+What is special about using `README.Rmd` instead of just `README.md`? You can
+include R chunks like so:
+
+```{r}
+#| label: cars
+
+summary(cars)
+```
+
+You'll still need to render `README.Rmd` regularly, to keep `README.md`
+up-to-date. `devtools::build_readme()` is handy for this.
+
+You can also embed plots, for example:
+
+```{r}
+#| label: pressure
+#| echo: false
+
+plot(pressure)
+```
+
+In that case, don't forget to commit and push the resulting figure files, so
+they display on GitHub and CRAN.
