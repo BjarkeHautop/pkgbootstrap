@@ -1,7 +1,7 @@
 Package: pkgbootstrap
 Title: Bootstrap an Opinionated R Package Setup
 Version: 0.0.0.9000
-Authors@R:c(
+Authors@R: c(
     person("Bjarke", "Hautop", , "bjarke.hautop@gmail.com", role = c("aut", "cre"))
   )
 Description: Creates a new R package with an opinionated setup: air
@@ -21,3 +21,7 @@ Imports:
     spelling,
     usethis
 Language: en-US
+Suggests: 
+    testthat (>= 3.0.0),
+    withr
+Config/testthat/edition: 3
