@@ -1,15 +1,23 @@
 Package: pkgbootstrap
-Title: What the Package Does (One Line, Title Case)
+Title: Bootstrap an Opinionated R Package Setup
 Version: 0.0.0.9000
-Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Authors@R:c(
+    person("Bjarke", "Hautop", , "bjarke.hautop@gmail.com", role = c("aut", "cre"))
+  )
+Description: Creates a new R package with an opinionated setup: air
+    formatting, git and GitHub, an Rmd
+    README with badges, codecov test coverage, spell checking, GitHub
+    Actions workflows, Dependabot, a pkgdown site on GitHub Pages, and
+    pre-commit hooks installed with prek.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 8.0.0
 URL: https://github.com/BjarkeHautop/pkgbootstrap, https://bjarkehautop.github.io/pkgbootstrap/
 BugReports: https://github.com/BjarkeHautop/pkgbootstrap/issues
-Suggests: 
+Imports:
+    gh,
+    usethis
+Suggests:
     spelling
 Language: en-US

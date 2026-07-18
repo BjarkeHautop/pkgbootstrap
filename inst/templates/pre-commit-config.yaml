@@ -1,0 +1,12 @@
+repos:
+  - repo: https://github.com/jolars/panache-pre-commit
+    rev: {{panache_rev}}
+
+    hooks:
+      - id: panache-format
+      - id: panache-lint
+
+  - repo: https://github.com/posit-dev/air-pre-commit
+    rev: {{air_rev}}
+    hooks:
+      - id: air-format

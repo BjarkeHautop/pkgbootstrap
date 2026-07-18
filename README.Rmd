@@ -23,47 +23,45 @@ coverage](https://codecov.io/gh/BjarkeHautop/pkgbootstrap/graph/badge.svg)](http
 [![R-CMD-check](https://github.com/BjarkeHautop/pkgbootstrap/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/BjarkeHautop/pkgbootstrap/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-The goal of pkgbootstrap is to ...
+pkgbootstrap creates a new R package with an opinionated setup in a single
+function call:
+
+- air formatting (`usethis::use_air()`)
+- git, pushed to GitHub
+- a license (MIT by default; pass any `usethis::use_*_license()` call)
+- an Rmd README
+- codecov test coverage with an opinionated `codecov.yml`
+- spell checking
+- `R-CMD-check` and `test-coverage` GitHub Actions workflows
+- Dependabot updates for GitHub Actions
+- a pkgdown site deployed via GitHub Pages
+- a `.pre-commit-config.yaml` with panache and air hooks pinned to their
+  latest release, installed with [prek](https://github.com/j178/prek) if
+  available
 
 ## Installation
 
 You can install the development version of pkgbootstrap like so:
 
 ```r
-# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
+# install.packages("pak")
+pak::pak("BjarkeHautop/pkgbootstrap")
 ```
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
-
-```{r}
-#| label: example
-
+```r
 library(pkgbootstrap)
-## basic example code
+bootstrap_pkg("~/GitHub/mynewpkg")
+
+# or with a different license/author
+bootstrap_pkg(
+  "~/GitHub/mynewpkg",
+  author_name = "First Last",
+  author_email = "first.last@example.com",
+  license = usethis::use_gpl3_license()
+)
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`? You can
-include R chunks like so:
-
-```{r}
-#| label: cars
-
-summary(cars)
-```
-
-You'll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date. `devtools::build_readme()` is handy for this.
-
-You can also embed plots, for example:
-
-```{r}
-#| label: pressure
-#| echo: false
-
-plot(pressure)
-```
-
-In that case, don't forget to commit and push the resulting figure files, so
-they display on GitHub and CRAN.
+Creating the GitHub repository requires a GitHub token that `usethis` can
+find; see `usethis::gh_token_help()` if `usethis::use_github()` fails.
